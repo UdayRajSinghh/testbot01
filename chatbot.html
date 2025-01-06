@@ -90,6 +90,11 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         z-index: 9999;
     }
+    #chat-toggle svg {
+        fill: #fff;
+        width: 30px;
+        height: 30px;
+    }
   </style>
 </head>
 <body>
@@ -102,23 +107,17 @@
           <button id="send-button">Send</button>
       </div>
   </div>
-  <div id="chat-toggle">💬</div>
+  <div id="chat-toggle">
+    <!-- SVG Chat Icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M21 2H3c-1.1 0-1.99.9-1.99 2L1 18c0 1.1.9 2 2 2h4v3l4-3h6c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 16H7v-2h12v2zm0-4H7v-2h12v2zm0-4H7V8h12v2z"/>
+    </svg>
+  </div>
 
   <script>
     (function() {
         const style = document.createElement("style");
-        style.innerHTML = `
-            #chatbot { /* styles already provided above */ }
-            #chat-header { /* styles already provided above */ }
-            #chat-box { /* styles already provided above */ }
-            .user-message { /* styles already provided above */ }
-            .bot-message { /* styles already provided above */ }
-            #chat-input-container { /* styles already provided above */ }
-            #chat-input { /* styles already provided above */ }
-            #send-button { /* styles already provided above */ }
-            #send-button:hover { /* styles already provided above */ }
-            #chat-toggle { /* styles already provided above */ }
-        `;
+        style.innerHTML = `/* styles already provided above */`;
         document.head.appendChild(style);
 
         const chatBot = document.getElementById("chatbot");
