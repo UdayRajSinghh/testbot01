@@ -464,23 +464,24 @@
             // Handle predefined question button click
             const addQuestion = async (question) => {
                 appendMessage(question, "user"); // Append the question as a user message
-                chatInput.value = "";
+                chatInput.value = ""; // Clear the chat input
 
                 // Trigger fade-out effect for predefined questions after the first message
                 handleFirstMessage();
 
                 try {
-                        const response = await fetch(`${BACKEND_URL}/chat`, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ message: userMessage }),
-                        });
+                    const response = await fetch(`${BACKEND_URL}/chat`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ message: question }), // Use 'question' instead of 'userMessage'
+                    });
                     const data = await response.json();
                     appendMessage(data.response, "bot");
                 } catch (err) {
                     appendMessage("Error: Could not connect to the backend server.", "bot");
                 }
             };
+
 
             // SVG click event listener to send message
             sendButton.addEventListener("click", sendMessage);
