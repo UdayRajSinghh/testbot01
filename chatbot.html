@@ -9,51 +9,24 @@
         /* Add styles dynamically for the chatbot */
         /* Chatbot container */
         #chatbot {
-    position: fixed;
-    bottom: 100px; /* Adjust this value to move the chat box higher */
-    right: 20px;
-    width: 350px;
-    height: 500px;
-    display: none;
-    flex-direction: column;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-    background: #ffffff;
-    z-index: 9999;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-}
-
-        /* Media Query for Mobile Devices */
-        @media (max-width: 768px) {
-            #chatbot {
-                width: 100vw;
-                height: 100vh;
-                bottom: 0;
-                right: 0;
-                border-radius: 0;
-            }
-
-            #chat-header {
-                font-size: 20px;
-                padding: 20px;
-                position: relative;
-                /* To place the toggle button */
-            }
-
-            #mobile-chat-toggle {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                display: block;
-            }
-
-            /* Hide the regular toggle button for mobile */
-            #chat-toggle {
-                display: none;
-            }
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            display: none;
+            /* Initially hidden */
+            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #ffffff;
+            z-index: 9999;
+            opacity: 0;
+            /* Initially hidden */
+            transform: translateY(20px);
+            /* Start position for animation */
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
 
         /* Keyframes for entry */
@@ -226,20 +199,21 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #e63946;
             width: 60px;
             height: 60px;
+            background: #da0000;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: #fff;
+            font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            z-index: 10000;
-            /* Higher than the chatbot container */
-            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            transition: transform 0.3s ease;
+            /* Smooth transition for chat button */
         }
-
 
         /* Rotate the button when chat is open */
         #chat-toggle.rotate {
@@ -335,17 +309,6 @@
         <div id="chat-header">
             <img id="logo" src="logo.png" alt="Logo" />
             ZENCIA
-            <!-- SVG toggle button for mobile -->
-            <svg id="mobile-chat-toggle" fill="#ffffff" viewBox="-3.5 0 19 19" xmlns="http://www.w3.org/2000/svg"
-                class="cf-icon-svg" stroke="#ffffff" style="display: none; cursor: pointer;">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path
-                        d="M11.383 13.644A1.03 1.03 0 0 1 9.928 15.1L6 11.172 2.072 15.1a1.03 1.03 0 1 1-1.455-1.456l3.928-3.928L.617 5.79a1.03 1.03 0 1 1 1.455-1.456L6 8.261l3.928-3.928a1.03 1.03 0 0 1 1.455 1.456L7.455 9.716z">
-                    </path>
-                </g>
-            </svg>
         </div>
         <div id="chat-box"></div>
         <div id="predefined-questions">
@@ -391,20 +354,6 @@
     </div>
 
     <script>
-        window.addEventListener('resize', function () {
-            const isMobile = window.innerWidth <= 768; // Check if it's a mobile screen
-
-            if (isMobile) {
-                // Modify chatbot toggle and appearance on mobile
-                chatBot.style.width = "100vw";
-                chatBot.style.height = "100vh";
-            } else {
-                // Revert to regular behavior on larger screens
-                chatBot.style.width = "350px";
-                chatBot.style.height = "500px";
-            }
-        });
-
         (function () {
             const style = document.createElement("style");
             style.innerHTML = `/* styles already provided above */`;
@@ -417,8 +366,8 @@
             const sendButton = document.getElementById("send-button");
             const chatToggleSVG = document.getElementById("chat-toggle-svg");
             const predefinedQuestions = document.getElementById("predefined-questions");
-            const mobileChatToggle = document.getElementById("mobile-chat-toggle");
             const BACKEND_URL = "https://flask-backend-881590070859.us-central1.run.app/";
+
 
             // Ensure chat is initially hidden
             chatBot.style.display = 'none';
@@ -448,12 +397,12 @@
 
                     // Change to close (X) icon
                     chatToggleSVG.innerHTML = ` 
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M16 8L8 16M8.00001 8L16 16" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </g>
-                    `;
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+                <path d="M16 8L8 16M8.00001 8L16 16" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        `;
 
                     chatToggle.classList.add("rotate"); // Rotate the button when open
                     chatToggleSVG.classList.add("rotate"); // Rotate the SVG when open
@@ -463,39 +412,19 @@
                         chatBot.style.display = "none"; // Hide chatbot after animation
                         chatBot.classList.remove("open", "closing"); // Remove animation classes
                     }, 300); // Match duration of animation
-
                     // Change back to open chat icon
                     chatToggleSVG.innerHTML = `
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M3 5V20.7929C3 21.2383 3.53857 21.4614 3.85355 21.1464L7.70711 17.2929C7.89464 17.1054 8.149 17 8.41421 17H19C20.1046 17 21 16.1046 21 15V5C21 3.89543 20.1046 3 19 3H5C3.89543 3 3 3.89543 3 5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M15 12C14.2005 12.6224 13.1502 13 12 13C10.8498 13 9.79952 12.6224 9 12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M9 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M15 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </g>
-                    `;
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+                <path d="M3 5V20.7929C3 21.2383 3.53857 21.4614 3.85355 21.1464L7.70711 17.2929C7.89464 17.1054 8.149 17 8.41421 17H19C20.1046 17 21 16.1046 21 15V5C21 3.89543 20.1046 3 19 3H5C3.89543 3 3 3.89543 3 5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M15 12C14.2005 12.6224 13.1502 13 12 13C10.8498 13 9.79952 12.6224 9 12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M9 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M15 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+        `;
                     chatToggle.classList.remove("rotate"); // Remove rotation on close
                     chatToggleSVG.classList.remove("rotate"); // Remove rotation from SVG on close
-                }
-            });
-
-            // Mobile toggle button functionality
-            mobileChatToggle.addEventListener("click", () => {
-                if (chatBot.style.display === "none") {
-                    chatBot.style.display = "flex"; // Show chatbot
-                    chatBot.classList.add("open"); // Apply open animation
-
-
-
-                    en
-                } else {
-                    chatBot.classList.add("closing"); // Apply closing animation
-                    setTimeout(() => {
-                        chatBot.style.display = "none"; // Hide chatbot after animation
-                        chatBot.classList.remove("open", "closing"); // Remove animation classes
-                    }, 300); // Match duration of animation
-
                 }
             });
 
@@ -539,11 +468,11 @@
                 handleFirstMessage();
 
                 try {
-                    const response = await fetch(`${BACKEND_URL}/chat`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ message: userMessage }),
-                    });
+                        const response = await fetch(`${BACKEND_URL}/chat`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ message: userMessage }),
+                        });
                     const data = await response.json();
                     appendMessage(data.response, "bot");
                 } catch (err) {
@@ -559,10 +488,12 @@
 
             // Expose addQuestion function to handle the predefined question buttons
             window.addQuestion = addQuestion;
-
         })();
-    </script>
 
+
+
+
+    </script>
 </body>
 
 </html>
