@@ -1,259 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
-    <style>
-        /* Chatbot container */
-        #chatbot {
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            width: 350px;
-            height: 500px;
-            display: none;
-            /* Initially hidden */
-            flex-direction: column;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            background: #ffffff;
-            z-index: 9999;
-            opacity: 0;
-            /* Initially hidden */
-            transform: translateY(20px);
-            /* Start position for animation */
-            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-        }
-
-        /* Keyframes for entry */
-        @keyframes enterChatbot {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Keyframes for exit */
-        @keyframes exitChatbot {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            to {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-        }
-
-        /* Apply the entry animation */
-        #chatbot.open {
-            display: flex;
-            /* Make chatbot visible */
-            animation: enterChatbot 0.3s forwards;
-            /* Trigger animation on opening */
-        }
-
-        /* Apply the exit animation */
-        #chatbot.closing {
-            animation: exitChatbot 0.3s forwards;
-            /* Trigger animation on closing */
-            pointer-events: none;
-            /* Disable interaction during closing animation */
-        }
-
-        /* Chat Header */
-        #chat-header {
-            background: #424242;
-            color: #fff;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            font-family: 'Roboto', sans-serif;
-            /* Apply modern sans-serif font */
-            font-weight: 500;
-            /* Slightly bold */
-            font-size: 25px;
-            /* Adjust font size */
-            cursor: pointer;
-        }
-
-        #logo {
-            width: 50px;
-            /* Adjust the size of the logo */
-            height: auto;
-            margin-right: 10px;
-            /* Space between the logo and the text */
-        }
-
-        /* Coming Soon Animation */
-        #coming-soon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            font-size: 30px;
-            color: #da0000;
-            font-weight: bold;
-            animation: comingSoonAnimation 2s infinite;
-        }
-
-        @keyframes comingSoonAnimation {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1.1);
-            }
-
-            100% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-        }
-
-        /* Chat Toggle button */
-        #chat-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #e63946; /* Red color */
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            z-index: 9998;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        #chat-toggle:hover {
-            background-color: #d62828; /* Darker red on hover */
-        }
-
-        /* Chat Toggle SVG */
-        #chat-toggle-svg {
-            width: 24px;
-            height: 24px;
-            fill: #ffffff;
-            transition: transform 0.3s, opacity 0.3s; /* Smooth transition */
-        }
-
-        /* Rotation for open/close SVG transition */
-        .rotate {
-            transform: rotate(180deg);
-        }
-
-        #google-banner {
-            text-align: center;
-            font-size: 12px;
-            color: #cccccc;
-            margin-top: 5px;
-            background: #424242;
-            padding: 5px;
-            border-top: 1px solid #ccc;
-            font-family: 'Roboto', sans-serif;
-        }
-    </style>
-</head>
-
-<body>
-    <!-- Chatbot HTML -->
-    <div id="chatbot">
-        <div id="chat-header">
-            <img id="logo" src="logo.png" alt="Logo" />
-            ZENCIA
-        </div>
-        <div id="coming-soon">
-            Coming Soon...
-        </div>
-        <div id="google-banner">Intelligence by Zencia</div>
+<div id="chatbot">
+    <div id="chat-header">ZENCIA
+      <button id="minimize-button">-</button>
     </div>
-
-    <div id="chat-toggle">
-        <!-- Initial Chat Icon (Open Icon) -->
-        <svg id="chat-toggle-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-            <g id="SVGRepo_iconCarrier">
-                <path
-                    d="M3 5V20.7929C3 21.2383 3.53857 21.4614 3.85355 21.1464L7.70711 17.2929C7.89464 17.1054 8.149 17 8.41421 17H19C20.1046 17 21 16.1046 21 15V5C21 3.89543 20.1046 3 19 3H5C3.89543 3 3 3.89543 3 5Z"
-                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M15 12C14.2005 12.6224 13.1502 13 12 13C10.8498 13 9.79952 12.6224 9 12" stroke="#000000"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M9 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                </path>
-                <path d="M15 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            </g>
-        </svg>
+    <div id="chat-box"></div>
+    <div id="chat-input-container">
+      <input id="chat-input" type="text" placeholder="Type a message..." />
+      <button id="send-button">Send</button>
     </div>
-
-    <script>
-        (function () {
-            const chatBot = document.getElementById("chatbot");
-            const chatToggle = document.getElementById("chat-toggle");
-            const chatToggleSVG = document.getElementById("chat-toggle-svg");
-
-            // Ensure chat is initially hidden
-            chatBot.style.display = 'none';
-
-            // Toggle button functionality
-            chatToggle.addEventListener("click", () => {
-                if (chatBot.style.display === "none") {
-                    chatBot.style.display = "flex"; // Show chatbot
-                    chatBot.classList.add("open"); // Apply open animation
-
-                    // Change to close (X) icon
-                    chatToggleSVG.innerHTML = `
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <path d="M16 8L8 16M8.00001 8L16 16" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </g>
-                    `;
-
-                    chatToggle.classList.add("rotate"); // Rotate the button when open
-                    chatToggleSVG.classList.add("rotate"); // Rotate the SVG when open
-                } else {
-                    chatBot.classList.add("closing"); // Apply closing animation
-                    setTimeout(() => {
-                        chatBot.style.display = "none"; // Hide chatbot after animation
-                        chatBot.classList.remove("open", "closing"); // Remove animation classes
-                    }, 300); // Match duration of animation
-                    // Change back to open chat icon
-                    chatToggleSVG.innerHTML = `
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <path d="M3 5V20.7929C3 21.2383 3.53857 21.4614 3.85355 21.1464L7.70711 17.2929C7.89464 17.1054 8.149 17 8.41421 17H19C20.1046 17 21 16.1046 21 15V5C21 3.89543 20.1046 3 19 3H5C3.89543 3 3 3.89543 3 5Z"
-                        stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M15 12C14.2005 12.6224 13.1502 13 12 13C10.8498 13 9.79952 12.6224 9 12" stroke="#000000"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M9 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M15 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </g>
-                    `;
-                    chatToggle.classList.remove("rotate"); // Remove rotation on close
-                    chatToggleSVG.classList.remove("rotate"); // Remove rotation from SVG on close
-                }
-            });
-        })();
-    </script>
-</body>
-
-</html>
+  </div>
+  <div id="chat-toggle">💬</div>
+  
+  <style>
+    #chatbot { position: fixed; bottom: 100px; right: 20px; width: 350px; height: 500px; display: none; flex-direction: column; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 10px; overflow: hidden; background: #ffffff; }
+    #chat-header { background: #da0000; color: #fff; padding: 20px; text-align: center; font-weight: bold; cursor: pointer; position: relative; }
+    #chat-header button { position: absolute; top: 50%; right: 20px; transform: translateY(-50%); background: transparent; border: none; color: #fff; font-size: 16px; cursor: pointer; }
+    #chat-box { flex: 1; padding: 10px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; position: relative; }
+    .message { margin: 5px 0; padding: 8px 10px; border-radius: 10px; font-size: 14px; max-width: 70%; }
+    .user-message { background: #ff4545; color: #fff; align-self: flex-end; border-bottom-right-radius: 0; }
+    .bot-message { background: #e2e2e2; color: #000; align-self: flex-start; border-bottom-left-radius: 0; }
+    #chat-input-container { display: flex; padding: 10px; background: #fff; border-top: 1px solid #ccc; }
+    #chat-input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 5px; }
+    #send-button { padding: 8px 15px; margin-left: 10px; background: #da0000; border: none; border-radius: 5px; color: #fff; cursor: pointer; }
+    #chat-toggle { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: #da0000; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 24px; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+  </style>
+  
+  <script>
+    const chatBot = document.getElementById("chatbot");
+    const chatToggle = document.getElementById("chat-toggle");
+    const chatBox = document.getElementById("chat-box");
+    const chatInput = document.getElementById("chat-input");
+    const sendButton = document.getElementById("send-button");
+    const BACKEND_URL = "https://flask-backend-881590070859.us-central1.run.app/";
+  
+    const appendMessage = (message, type) => {
+      const messageElement = document.createElement("div");
+      messageElement.className = `message ${type === "user" ? "user-message" : "bot-message"}`;
+      messageElement.textContent = message;
+      chatBox.appendChild(messageElement);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    };
+  
+    const sendMessage = async () => {
+      const userMessage = chatInput.value.trim();
+      if (!userMessage) return;
+      appendMessage(userMessage, "user");
+      chatInput.value = "";
+  
+      try {
+        const response = await fetch(`${BACKEND_URL}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userMessage }),
+        });
+        const data = await response.json();
+        appendMessage(data.response || "No response available.", "bot");
+      } catch (err) {
+        appendMessage("Error: Could not connect to the server.", "bot");
+      }
+    };
+  
+    sendButton.addEventListener("click", sendMessage);
+    chatInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+    chatToggle.addEventListener("click", () => {
+      chatBot.style.display = chatBot.style.display === "flex" ? "none" : "flex";
+    });
+  </script>
+  
