@@ -15,7 +15,6 @@
             width: 350px;
             height: 500px;
             display: none;
-            /* Initially hidden */
             flex-direction: column;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -23,10 +22,38 @@
             background: #ffffff;
             z-index: 9999;
             opacity: 0;
-            /* Initially hidden */
             transform: translateY(20px);
-            /* Start position for animation */
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+
+        /* Media Query for Mobile Devices */
+        @media (max-width: 768px) {
+            #chatbot {
+                width: 100vw;
+                height: 100vh;
+                bottom: 0;
+                right: 0;
+                border-radius: 0;
+            }
+
+            #chat-header {
+                font-size: 20px;
+                padding: 20px;
+                position: relative;
+                /* To place the toggle button */
+            }
+
+            #mobile-chat-toggle {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                display: block;
+            }
+
+            /* Hide the regular toggle button for mobile */
+            #chat-toggle {
+                display: none;
+            }
         }
 
         /* Keyframes for entry */
@@ -199,20 +226,17 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
+            background-color: #e63946;
             width: 60px;
             height: 60px;
-            background: #da0000;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #fff;
-            font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 9999;
-            transition: transform 0.3s ease;
-            /* Smooth transition for chat button */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 9998;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         /* Rotate the button when chat is open */
@@ -246,6 +270,60 @@
             border-top: 1px solid #ccc;
             font-family: 'Roboto', sans-serif;
         }
+
+        #predefined-questions {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            overflow-x: auto;
+            /* Enable horizontal scrolling */
+            overflow-y: hidden;
+            /* Prevent vertical scrolling */
+            white-space: nowrap;
+            /* Prevent wrapping of buttons */
+            -webkit-overflow-scrolling: touch;
+            /* Smooth scrolling on iOS */
+            scrollbar-width: thin;
+            /* Optional: Customize scrollbar appearance */
+        }
+
+
+        .question-button {
+            background-color: #da0000;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .question-button:hover {
+            background-color: #d46d6d;
+        }
+
+        /* Predefined questions fade-out animation */
+        @keyframes fadeOutQuestions {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        #predefined-questions.fade-out {
+            animation: fadeOutQuestions 1s forwards;
+            pointer-events: none;
+            /* Disable interaction during fade-out */
+        }
+
+        /* Add a class to ensure the questions are fully removed after fade-out */
+        #predefined-questions.hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -255,8 +333,26 @@
         <div id="chat-header">
             <img id="logo" src="logo.png" alt="Logo" />
             ZENCIA
+            <!-- SVG toggle button for mobile -->
+            <svg id="mobile-chat-toggle" fill="#ffffff" viewBox="-3.5 0 19 19" xmlns="http://www.w3.org/2000/svg"
+                class="cf-icon-svg" stroke="#ffffff" style="display: none; cursor: pointer;">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path
+                        d="M11.383 13.644A1.03 1.03 0 0 1 9.928 15.1L6 11.172 2.072 15.1a1.03 1.03 0 1 1-1.455-1.456l3.928-3.928L.617 5.79a1.03 1.03 0 1 1 1.455-1.456L6 8.261l3.928-3.928a1.03 1.03 0 0 1 1.455 1.456L7.455 9.716z">
+                    </path>
+                </g>
+            </svg>
         </div>
         <div id="chat-box"></div>
+        <div id="predefined-questions">
+            <button class="question-button" onclick="addQuestion('What is your name?')">What is your name?</button>
+            <button class="question-button" onclick="addQuestion('How can I help you?')">How can I help you?</button>
+            <button class="question-button" onclick="addQuestion('Tell me about Zencia')">Tell me about Zencia</button>
+            <button class="question-button" onclick="addQuestion('What services do you offer?')">What services do you
+                offer?</button>
+        </div>
         <div id="chat-input-container">
             <input id="chat-input" type="text" placeholder="Type a message..." />
             <!-- SVG icon to send message -->
@@ -293,37 +389,70 @@
     </div>
 
     <script>
+        window.addEventListener('resize', function () {
+            const isMobile = window.innerWidth <= 768; // Check if it's a mobile screen
+    
+            if (isMobile) {
+                // Modify chatbot toggle and appearance on mobile
+                chatBot.style.width = "100vw";
+                chatBot.style.height = "100vh";
+            } else {
+                // Revert to regular behavior on larger screens
+                chatBot.style.width = "350px";
+                chatBot.style.height = "500px";
+            }
+        });
+    
         (function () {
             const style = document.createElement("style");
             style.innerHTML = `/* styles already provided above */`;
             document.head.appendChild(style);
-
+    
             const chatBot = document.getElementById("chatbot");
             const chatToggle = document.getElementById("chat-toggle");
             const chatBox = document.getElementById("chat-box");
             const chatInput = document.getElementById("chat-input");
             const sendButton = document.getElementById("send-button");
             const chatToggleSVG = document.getElementById("chat-toggle-svg");
+            const predefinedQuestions = document.getElementById("predefined-questions");
+            const mobileChatToggle = document.getElementById("mobile-chat-toggle");
             const BACKEND_URL = "https://flask-backend-881590070859.us-central1.run.app/";
-
+    
             // Ensure chat is initially hidden
             chatBot.style.display = 'none';
-
+    
+            // Flag to track if the first message has been sent
+            let isFirstMessage = true;
+    
+            // Function to handle the first message sent and fade out predefined questions
+            const handleFirstMessage = () => {
+                if (isFirstMessage) {
+                    predefinedQuestions.classList.add("fade-out"); // Apply fade-out animation
+    
+                    // After the fade-out completes, hide the questions completely
+                    setTimeout(() => {
+                        predefinedQuestions.classList.add("hidden"); // Hide the questions entirely
+                    }, 1000); // Match the duration of the fade-out animation (1s)
+    
+                    isFirstMessage = false; // Set flag to false after first message
+                }
+            };
+    
             // Toggle button functionality
             chatToggle.addEventListener("click", () => {
                 if (chatBot.style.display === "none") {
                     chatBot.style.display = "flex"; // Show chatbot
                     chatBot.classList.add("open"); // Apply open animation
-
+    
                     // Change to close (X) icon
                     chatToggleSVG.innerHTML = ` 
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <path d="M16 8L8 16M8.00001 8L16 16" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </g>
-                `;
-
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M16 8L8 16M8.00001 8L16 16" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    `;
+    
                     chatToggle.classList.add("rotate"); // Rotate the button when open
                     chatToggleSVG.classList.add("rotate"); // Rotate the SVG when open
                 } else {
@@ -332,64 +461,106 @@
                         chatBot.style.display = "none"; // Hide chatbot after animation
                         chatBot.classList.remove("open", "closing"); // Remove animation classes
                     }, 300); // Match duration of animation
+    
                     // Change back to open chat icon
                     chatToggleSVG.innerHTML = `
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <path
-                            d="M3 5V20.7929C3 21.2383 3.53857 21.4614 3.85355 21.1464L7.70711 17.2929C7.89464 17.1054 8.149 17 8.41421 17H19C20.1046 17 21 16.1046 21 15V5C21 3.89543 20.1046 3 19 3H5C3.89543 3 3 3.89543 3 5Z"
-                            stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M15 12C14.2005 12.6224 13.1502 13 12 13C10.8498 13 9.79952 12.6224 9 12" stroke="#000000"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M9 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        </path>
-                        <path d="M15 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </g>
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M3 5V20.7929C3 21.2383 3.53857 21.4614 3.85355 21.1464L7.70711 17.2929C7.89464 17.1054 8.149 17 8.41421 17H19C20.1046 17 21 16.1046 21 15V5C21 3.89543 20.1046 3 19 3H5C3.89543 3 3 3.89543 3 5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M15 12C14.2005 12.6224 13.1502 13 12 13C10.8498 13 9.79952 12.6224 9 12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M9 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M15 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
                     `;
-                    chatToggle.classList.remove("rotate"); // Reset button rotation
-                    chatToggleSVG.classList.remove("rotate"); // Reset SVG rotation
+                    chatToggle.classList.remove("rotate"); // Remove rotation on close
+                    chatToggleSVG.classList.remove("rotate"); // Remove rotation from SVG on close
                 }
             });
-
-            // Send message functionality
-            sendButton.addEventListener("click", async () => {
+    
+            // Mobile toggle button functionality
+            mobileChatToggle.addEventListener("click", () => {
+                if (chatBot.style.display === "none") {
+                    chatBot.style.display = "flex"; // Show chatbot
+                    chatBot.classList.add("open"); // Apply open animation
+    
+                    
+    
+                    en
+                } else {
+                    chatBot.classList.add("closing"); // Apply closing animation
+                    setTimeout(() => {
+                        chatBot.style.display = "none"; // Hide chatbot after animation
+                        chatBot.classList.remove("open", "closing"); // Remove animation classes
+                    }, 300); // Match duration of animation
+    
+                }
+            });
+    
+            const appendMessage = (message, type) => {
+                const messageElement = document.createElement("div");
+                messageElement.className = `${type === "user" ? "user-message" : "bot-message"}`;
+                messageElement.textContent = message;
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            };
+    
+            const sendMessage = async () => {
                 const userMessage = chatInput.value.trim();
-                if (userMessage) {
-                    // Show user message
-                    const userMessageElement = document.createElement("div");
-                    userMessageElement.classList.add("user-message");
-                    userMessageElement.textContent = userMessage;
-                    chatBox.appendChild(userMessageElement);
-
-                    // Clear chat input
-                    chatInput.value = "";
-                    chatBox.scrollTop = chatBox.scrollHeight;
-
-                    try {
+                if (!userMessage) return;
+    
+                appendMessage(userMessage, "user");
+                chatInput.value = "";
+    
+                // Trigger fade-out effect for predefined questions after the first message
+                handleFirstMessage();
+    
+                try {
                         const response = await fetch(`${BACKEND_URL}/chat`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ message: userMessage }),
                         });
-
-                        const data = await response.json();
-                        const botMessage = data.response; // Assuming backend returns a response field
-
-                        // Show bot response
-                        const botMessageElement = document.createElement("div");
-                        botMessageElement.classList.add("bot-message");
-                        botMessageElement.textContent = botMessage;
-                        chatBox.appendChild(botMessageElement);
-
-                        chatBox.scrollTop = chatBox.scrollHeight;
-                    } catch (error) {
-                        console.error("Error fetching response:", error);
-                    }
+                    const data = await response.json();
+                    appendMessage(data.response, "bot");
+                } catch (err) {
+                    appendMessage("Error: Could not connect to the backend server.", "bot");
                 }
+            };
+    
+            // Handle predefined question button click
+            const addQuestion = async (question) => {
+                appendMessage(question, "user"); // Append the question as a user message
+                chatInput.value = "";
+    
+                // Trigger fade-out effect for predefined questions after the first message
+                handleFirstMessage();
+    
+                try {
+                        const response = await fetch(`${BACKEND_URL}/chat`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ message: userMessage }),
+                        });
+                    const data = await response.json();
+                    appendMessage(data.response, "bot");
+                } catch (err) {
+                    appendMessage("Error: Could not connect to the backend server.", "bot");
+                }
+            };
+    
+            // SVG click event listener to send message
+            sendButton.addEventListener("click", sendMessage);
+            chatInput.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") sendMessage();
             });
+    
+            // Expose addQuestion function to handle the predefined question buttons
+            window.addQuestion = addQuestion;
+            
         })();
     </script>
+    
 </body>
 
 </html>
