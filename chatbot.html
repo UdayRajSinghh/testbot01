@@ -437,22 +437,28 @@
             chatBox.scrollTop = chatBox.scrollHeight;
         };
 
-        const appendTypingEffect = (message, delay = 20) => {
-            const messageElement = document.createElement("div");
-            messageElement.className = "bot-message";
-            chatBox.appendChild(messageElement);
+        const appendTypingEffect = (message, delay = 25) => {
+    const messageElement = document.createElement("div");
+    messageElement.className = "bot-message";
+    chatBox.appendChild(messageElement);
 
-            let index = 0;
-            const interval = setInterval(() => {
-                if (index < message.length) {
-                    messageElement.textContent += message[index];
-                    index++;
-                    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
-                } else {
-                    clearInterval(interval); // Stop typing effect when done
-                }
-            }, delay);
-        };
+    // Apply formatting to the message
+    const formattedMessage = message
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold for text between '**'
+        .replace(/\*\s/g, "<br>• "); // Line break and bullet for '* '
+
+    // Display message progressively
+    let index = 0;
+    const interval = setInterval(() => {
+        messageElement.innerHTML = formattedMessage.slice(0, index);
+        index++;
+        chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+        if (index > formattedMessage.length) {
+            clearInterval(interval); // Stop typing effect when done
+        }
+    }, delay);
+};
+
 
         const sendMessage = async () => {
             const userMessage = chatInput.value.trim();
