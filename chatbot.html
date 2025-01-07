@@ -1,3 +1,5 @@
+<!-- Current Live AI Agent -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +10,7 @@
     <style>
         /* Add styles dynamically for the chatbot */
         /* Chatbot container */
+        /* Chatbot container */
         #chatbot {
             position: fixed;
             bottom: 100px;
@@ -15,7 +18,6 @@
             width: 350px;
             height: 500px;
             display: none;
-            /* Initially hidden */
             flex-direction: column;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -23,11 +25,24 @@
             background: #ffffff;
             z-index: 9999;
             opacity: 0;
-            /* Initially hidden */
             transform: translateY(20px);
-            /* Start position for animation */
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
+
+        /* Fullscreen mode for mobile devices */
+        @media (max-width: 768px) {
+            #chatbot {
+                bottom: 0;
+                right: 0;
+                width: 100vw;
+                /* Full width */
+                height: 100vh;
+                /* Full height */
+                border-radius: 0;
+                /* Remove border radius for fullscreen */
+            }
+        }
+
 
         /* Keyframes for entry */
         @keyframes enterChatbot {
@@ -468,11 +483,11 @@
                 handleFirstMessage();
 
                 try {
-                        const response = await fetch(`${BACKEND_URL}/chat`, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ message: userMessage }),
-                        });
+                    const response = await fetch(`${BACKEND_URL}/chat`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ message: userMessage }),
+                    });
                     const data = await response.json();
                     appendMessage(data.response, "bot");
                 } catch (err) {
