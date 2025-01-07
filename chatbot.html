@@ -235,9 +235,11 @@
             align-items: center;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            z-index: 9998;
+            z-index: 10000;
+            /* Higher than the chatbot container */
             transition: background-color 0.3s, transform 0.3s;
         }
+
 
         /* Rotate the button when chat is open */
         #chat-toggle.rotate {
