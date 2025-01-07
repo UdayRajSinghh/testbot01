@@ -9,22 +9,22 @@
         /* Add styles dynamically for the chatbot */
         /* Chatbot container */
         #chatbot {
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            width: 350px;
-            height: 500px;
-            display: none;
-            flex-direction: column;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            background: #ffffff;
-            z-index: 9999;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-        }
+    position: fixed;
+    bottom: 100px; /* Adjust this value to move the chat box higher */
+    right: 20px;
+    width: 350px;
+    height: 500px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
 
         /* Media Query for Mobile Devices */
         @media (max-width: 768px) {
