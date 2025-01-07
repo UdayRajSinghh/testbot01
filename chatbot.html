@@ -333,10 +333,18 @@
         <div id="chat-header">
             <img id="logo" src="logo.png" alt="Logo" />
             ZENCIA
-            <button id="toggle-off-button"
-                style="margin-left:auto;background:none;border:none;color:white;font-size:16px;cursor:pointer;">×</button>
+            <!-- SVG toggle button for mobile -->
+            <svg id="mobile-chat-toggle" fill="#ffffff" viewBox="-3.5 0 19 19" xmlns="http://www.w3.org/2000/svg"
+                class="cf-icon-svg" stroke="#ffffff" style="display: none; cursor: pointer;">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path
+                        d="M11.383 13.644A1.03 1.03 0 0 1 9.928 15.1L6 11.172 2.072 15.1a1.03 1.03 0 1 1-1.455-1.456l3.928-3.928L.617 5.79a1.03 1.03 0 1 1 1.455-1.456L6 8.261l3.928-3.928a1.03 1.03 0 0 1 1.455 1.456L7.455 9.716z">
+                    </path>
+                </g>
+            </svg>
         </div>
-
         <div id="chat-box"></div>
         <div id="predefined-questions">
             <button class="question-button" onclick="addQuestion('What is your name?')">What is your name?</button>
@@ -381,31 +389,6 @@
     </div>
 
     <script>
-        // Toggle-off button functionality
-        const toggleOffButton = document.getElementById("toggle-off-button");
-        toggleOffButton.addEventListener("click", () => {
-            const chatBot = document.getElementById("chatbot");
-            chatBot.style.display = "none"; // Completely hide the chatbot
-            const chatToggle = document.getElementById("chat-toggle");
-            chatToggle.classList.remove("rotate"); // Reset the toggle button if active
-            const chatToggleSVG = document.getElementById("chat-toggle-svg");
-            chatToggleSVG.innerHTML = `
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-        <g id="SVGRepo_iconCarrier">
-            <path
-                d="M3 5V20.7929C3 21.2383 3.53857 21.4614 3.85355 21.1464L7.70711 17.2929C7.89464 17.1054 8.149 17 8.41421 17H19C20.1046 17 21 16.1046 21 15V5C21 3.89543 20.1046 3 19 3H5C3.89543 3 3 3.89543 3 5Z"
-                stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            <path d="M15 12C14.2005 12.6224 13.1502 13 12 13C10.8498 13 9.79952 12.6224 9 12" stroke="#000000"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            <path d="M9 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            <path d="M15 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round"></path>
-        </g>
-    `; // Reset the toggle button icon
-        });
-
         window.addEventListener('resize', function () {
             const isMobile = window.innerWidth <= 768; // Check if it's a mobile screen
 
