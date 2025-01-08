@@ -15,9 +15,8 @@
             bottom: 100px;
             right: 20px;
             width: 350px;
-            height: 650px;
+            height: 500px;
             display: none;
-            /* Initially hidden */
             flex-direction: column;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -25,9 +24,7 @@
             background: #ffffff;
             z-index: 9999;
             opacity: 0;
-            /* Initially hidden */
             transform: translateY(20px);
-            /* Start position for animation */
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
         }
 
@@ -355,49 +352,49 @@
         </svg>
     </div>
 
-        <script>
-    (function () {
-        const style = document.createElement("style");
-        style.innerHTML = `/* styles already provided above */`;
-        document.head.appendChild(style);
+    <script>
+        (function () {
+            const style = document.createElement("style");
+            style.innerHTML = `/* styles already provided above */`;
+            document.head.appendChild(style);
 
-        const chatBot = document.getElementById("chatbot");
-        const chatToggle = document.getElementById("chat-toggle");
-        const chatBox = document.getElementById("chat-box");
-        const chatInput = document.getElementById("chat-input");
-        const sendButton = document.getElementById("send-button");
-        const chatToggleSVG = document.getElementById("chat-toggle-svg");
-        const predefinedQuestions = document.getElementById("predefined-questions");
-        const BACKEND_URL = "https://flask-backend-881590070859.us-central1.run.app/";
+            const chatBot = document.getElementById("chatbot");
+            const chatToggle = document.getElementById("chat-toggle");
+            const chatBox = document.getElementById("chat-box");
+            const chatInput = document.getElementById("chat-input");
+            const sendButton = document.getElementById("send-button");
+            const chatToggleSVG = document.getElementById("chat-toggle-svg");
+            const predefinedQuestions = document.getElementById("predefined-questions");
+            const BACKEND_URL = "https://flask-backend-881590070859.us-central1.run.app/";
 
-        // Ensure chat is initially hidden
-        chatBot.style.display = 'none';
+            // Ensure chat is initially hidden
+            chatBot.style.display = 'none';
 
-        // Flag to track if the first message has been sent
-        let isFirstMessage = true;
+            // Flag to track if the first message has been sent
+            let isFirstMessage = true;
 
-        // Function to handle the first message sent and fade out predefined questions
-        const handleFirstMessage = () => {
-            if (isFirstMessage) {
-                predefinedQuestions.classList.add("fade-out"); // Apply fade-out animation
+            // Function to handle the first message sent and fade out predefined questions
+            const handleFirstMessage = () => {
+                if (isFirstMessage) {
+                    predefinedQuestions.classList.add("fade-out"); // Apply fade-out animation
 
-                // After the fade-out completes, hide the questions completely
-                setTimeout(() => {
-                    predefinedQuestions.classList.add("hidden"); // Hide the questions entirely
-                }, 1000); // Match the duration of the fade-out animation (1s)
+                    // After the fade-out completes, hide the questions completely
+                    setTimeout(() => {
+                        predefinedQuestions.classList.add("hidden"); // Hide the questions entirely
+                    }, 1000); // Match the duration of the fade-out animation (1s)
 
-                isFirstMessage = false; // Set flag to false after first message
-            }
-        };
+                    isFirstMessage = false; // Set flag to false after first message
+                }
+            };
 
-        // Toggle button functionality
-        chatToggle.addEventListener("click", () => {
-            if (chatBot.style.display === "none") {
-                chatBot.style.display = "flex"; // Show chatbot
-                chatBot.classList.add("open"); // Apply open animation
+            // Toggle button functionality
+            chatToggle.addEventListener("click", () => {
+                if (chatBot.style.display === "none") {
+                    chatBot.style.display = "flex"; // Show chatbot
+                    chatBot.classList.add("open"); // Apply open animation
 
-                // Change to close (X) icon
-                chatToggleSVG.innerHTML = ` 
+                    // Change to close (X) icon
+                    chatToggleSVG.innerHTML = ` 
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
@@ -405,16 +402,16 @@
                     </g>
                 `;
 
-                chatToggle.classList.add("rotate"); // Rotate the button when open
-                chatToggleSVG.classList.add("rotate"); // Rotate the SVG when open
-            } else {
-                chatBot.classList.add("closing"); // Apply closing animation
-                setTimeout(() => {
-                    chatBot.style.display = "none"; // Hide chatbot after animation
-                    chatBot.classList.remove("open", "closing"); // Remove animation classes
-                }, 300); // Match duration of animation
-                // Change back to open chat icon
-                chatToggleSVG.innerHTML = `
+                    chatToggle.classList.add("rotate"); // Rotate the button when open
+                    chatToggleSVG.classList.add("rotate"); // Rotate the SVG when open
+                } else {
+                    chatBot.classList.add("closing"); // Apply closing animation
+                    setTimeout(() => {
+                        chatBot.style.display = "none"; // Hide chatbot after animation
+                        chatBot.classList.remove("open", "closing"); // Remove animation classes
+                    }, 300); // Match duration of animation
+                    // Change back to open chat icon
+                    chatToggleSVG.innerHTML = `
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
@@ -424,96 +421,96 @@
                         <path d="M15 8.01953V8" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                     </g>
                 `;
-                chatToggle.classList.remove("rotate"); // Remove rotation on close
-                chatToggleSVG.classList.remove("rotate"); // Remove rotation from SVG on close
-            }
-        });
+                    chatToggle.classList.remove("rotate"); // Remove rotation on close
+                    chatToggleSVG.classList.remove("rotate"); // Remove rotation from SVG on close
+                }
+            });
 
-        const appendMessage = (message, type) => {
-            const messageElement = document.createElement("div");
-            messageElement.className = `${type === "user" ? "user-message" : "bot-message"}`;
-            messageElement.textContent = message;
-            chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        };
+            const appendMessage = (message, type) => {
+                const messageElement = document.createElement("div");
+                messageElement.className = `${type === "user" ? "user-message" : "bot-message"}`;
+                messageElement.textContent = message;
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            };
 
-        const appendTypingEffect = (message, delay = 25) => {
-    const messageElement = document.createElement("div");
-    messageElement.className = "bot-message";
-    chatBox.appendChild(messageElement);
+            const appendTypingEffect = (message, delay = 25) => {
+                const messageElement = document.createElement("div");
+                messageElement.className = "bot-message";
+                chatBox.appendChild(messageElement);
 
-    // Apply formatting to the message
-    const formattedMessage = message
-        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold for text between '**'
-        .replace(/\*\s/g, "<br>• "); // Line break and bullet for '* '
+                // Apply formatting to the message
+                const formattedMessage = message
+                    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold for text between '**'
+                    .replace(/\*\s/g, "<br>• "); // Line break and bullet for '* '
 
-    // Display message progressively
-    let index = 0;
-    const interval = setInterval(() => {
-        messageElement.innerHTML = formattedMessage.slice(0, index);
-        index++;
-        chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
-        if (index > formattedMessage.length) {
-            clearInterval(interval); // Stop typing effect when done
-        }
-    }, delay);
-};
+                // Display message progressively
+                let index = 0;
+                const interval = setInterval(() => {
+                    messageElement.innerHTML = formattedMessage.slice(0, index);
+                    index++;
+                    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+                    if (index > formattedMessage.length) {
+                        clearInterval(interval); // Stop typing effect when done
+                    }
+                }, delay);
+            };
 
 
-        const sendMessage = async () => {
-            const userMessage = chatInput.value.trim();
-            if (!userMessage) return;
+            const sendMessage = async () => {
+                const userMessage = chatInput.value.trim();
+                if (!userMessage) return;
 
-            appendMessage(userMessage, "user");
-            chatInput.value = "";
+                appendMessage(userMessage, "user");
+                chatInput.value = "";
 
-            // Trigger fade-out effect for predefined questions after the first message
-            handleFirstMessage();
+                // Trigger fade-out effect for predefined questions after the first message
+                handleFirstMessage();
 
-            try {
-                const response = await fetch(`${BACKEND_URL}/chat`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: userMessage }),
-                });
-                const data = await response.json();
-                appendTypingEffect(data.response); // Use typing effect for bot responses
-            } catch (err) {
-                appendMessage("Error: Could not connect to the backend server.", "bot");
-            }
-        };
+                try {
+                    const response = await fetch(`${BACKEND_URL}/chat`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ message: userMessage }),
+                    });
+                    const data = await response.json();
+                    appendTypingEffect(data.response); // Use typing effect for bot responses
+                } catch (err) {
+                    appendMessage("Error: Could not connect to the backend server.", "bot");
+                }
+            };
 
-        // Handle predefined question button click
-        const addQuestion = async (question) => {
-            appendMessage(question, "user"); // Append the question as a user message
-            chatInput.value = ""; // Clear the chat input
+            // Handle predefined question button click
+            const addQuestion = async (question) => {
+                appendMessage(question, "user"); // Append the question as a user message
+                chatInput.value = ""; // Clear the chat input
 
-            // Trigger fade-out effect for predefined questions after the first message
-            handleFirstMessage();
+                // Trigger fade-out effect for predefined questions after the first message
+                handleFirstMessage();
 
-            try {
-                const response = await fetch(`${BACKEND_URL}/chat`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: question }), // Use 'question' instead of 'userMessage'
-                });
-                const data = await response.json();
-                appendTypingEffect(data.response); // Use typing effect for bot responses
-            } catch (err) {
-                appendMessage("Error: Could not connect to the backend server.", "bot");
-            }
-        };
+                try {
+                    const response = await fetch(`${BACKEND_URL}/chat`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ message: question }), // Use 'question' instead of 'userMessage'
+                    });
+                    const data = await response.json();
+                    appendTypingEffect(data.response); // Use typing effect for bot responses
+                } catch (err) {
+                    appendMessage("Error: Could not connect to the backend server.", "bot");
+                }
+            };
 
-        // SVG click event listener to send message
-        sendButton.addEventListener("click", sendMessage);
-        chatInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") sendMessage();
-        });
+            // SVG click event listener to send message
+            sendButton.addEventListener("click", sendMessage);
+            chatInput.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") sendMessage();
+            });
 
-        // Expose addQuestion function to handle the predefined question buttons
-        window.addQuestion = addQuestion;
-    })();
-</script>
+            // Expose addQuestion function to handle the predefined question buttons
+            window.addQuestion = addQuestion;
+        })();
+    </script>
 
 </body>
 
