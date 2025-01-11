@@ -196,47 +196,7 @@
             background: #d46d6d;
         }
 
-        /* Chat Toggle (open/close button) */
-        #chat-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background: #da0000;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 9999;
-            transition: transform 0.3s ease;
-            /* Smooth transition for chat button */
-        }
-
-        /* Rotate the button when chat is open */
-        #chat-toggle.rotate {
-            transform: rotate(45deg);
-            /* Rotate the button when chat is open */
-        }
-
-        /* Chat Toggle SVG (icon) */
-        #chat-toggle svg {
-            fill: #fff;
-            width: 30px;
-            height: 30px;
-            transition: transform 0.3s ease;
-            /* Smooth transition for SVG icon */
-        }
-
-        /* Rotate the SVG when chat is open */
-        #chat-toggle svg.rotate {
-            transform: rotate(45deg);
-            /* Rotate the X icon */
-        }
+        
 
         #google-banner {
             text-align: center;
@@ -247,6 +207,39 @@
             padding: 5px;
             border-top: 1px solid #ccc;
             font-family: 'Roboto', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            #chatbot {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            #chat-header {
+                font-size: 20px;
+                padding: 10px;
+            }
+
+            #chat-input-container {
+                padding: 5px;
+            }
+
+            #chat-input {
+                font-size: 12px;
+                padding: 5px;
+            }
+
+            #send-button {
+                width: 20px;
+                height: 20px;
+                padding: 5px;
+                margin-left: 5px;
+            }
         }
     </style>
 </head>
